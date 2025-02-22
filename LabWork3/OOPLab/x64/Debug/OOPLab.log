@@ -1,3 +1,0 @@
-﻿  Source.cpp
-C:\Users\mangl\Desktop\OOPLab\Source.cpp(64,11): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  OOPLab.vcxproj -> C:\Users\mangl\Desktop\OOPLab\x64\Debug\OOPLab.exe
