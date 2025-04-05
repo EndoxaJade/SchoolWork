@@ -12,18 +12,62 @@ import json
 
 NORM_FONT = ("Helvetica", 10)
 LARGE_FONT = ("Verdana", 13)
+class PasswordInfoWindow(Toplevel):
+    def __init__(self, parent, password_info):
+        super().__init__(parent)
+        self.title("Password Information")
+        self.geometry("300x200")
 
+        # Отображение информации о пароле
+        for key, value in password_info.items():
+            label = Label(self, text=f"{key}: {value}")
+            label.pack(pady=5)
 
 class ListWindow(Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.title("Stored Passwords")
+        self.listbox = Listbox(self)
+        self.listbox.pack(fill=BOTH, expand=True)
+        
+        self.passwords = self.load_passwords()  # Load passwords upon initialization
+        self.updateList()  # Load passwords to display initially
 
-    def __init__(self, *args):
-        Toplevel.__init__(self, *args)
-        self.title("List Database")
+        self.listbox.bind('<Double-1>', self.on_double_click)  # Bind double-clicks to password information display
 
-        self.frame = getTreeFrame(self, bd=3)
-        self.frame.pack()
+    def updateList(self):
+        # Clear any existing items in the listbox
+        self.listbox.delete(0, END)  
+        
+        # Create a set to track seen names and avoid duplicates
+        seen_names = set()
+        
+        for password in self.passwords:
+            # Only add password name if it hasn't been added yet
+            if password['name'] not in seen_names:
+                seen_names.add(password['name'])
+                self.listbox.insert(END, password['name'])  # Insert unique password names
+
+    def load_passwords(self):
+        # Load the password data from the file
+        try:
+            with open(".data", "r") as outfile:
+                data = json.load(outfile)
+                return [{'name': service, 'username': details[0], 'password': details[1]} for service, details in data.items()]
+        except (IOError, json.JSONDecodeError):
+            return []  # Return an empty list if there is an error in loading
+
+    def on_double_click(self, event):
+        selected_index = self.listbox.curselection()
+        if selected_index:
+            password_info = self.passwords[selected_index[0]]  # Get the password info based on selection
+            PasswordInfoWindow(self, password_info)  # Open window to show password details
 
 
+def addConfigBtn(self, login):
+    btnCmdList = [lambda: Add.AddWindow(self, lambda: self.updateList()),
+                  lambda: List.ListWindow(self), 
+                  lambda: Search.SearchWindow(self)]
 # Lots of Awesomeness
 class getTreeFrame(Frame):
 
