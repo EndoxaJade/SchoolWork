@@ -26,9 +26,9 @@ class Login(Tk):
         '''Needs update'''
         if os.name == 'nt':
             Tk.iconbitmap(self, default='icon.ico')
-        Tk.wm_title(self, "Password Manager")
+        Tk.wm_title(self, "Шифровалка")
         self.state = {
-            "text": "Login to access password database.", "val": False
+            "text": "Войти в аккаунт.", "val": False
         }
 
         if encode.password:
@@ -56,7 +56,7 @@ class Login(Tk):
 
         s = ttk.Style()
         s.configure("Submit.TButton", font=BUTTON_FONT)
-        submitBtn = ttk.Button(login, text="Submit", style="Submit.TButton",
+        submitBtn = ttk.Button(login, text="Войти", style="Submit.TButton",
                                command=lambda: self.checkPwd(
                                    login, label=loginLabel, entry=entry,
                                    btn=submitBtn))
@@ -69,7 +69,7 @@ class Login(Tk):
         # if passwords match
         #if hashlib.md5(chk).hexdigest() == encode.password:
 
-        self.state['text'] = "Logged In"
+        self.state['text'] = "Вход"
         self.state['val'] = True
             # Using .config() to modift the args
         kwargs['label'].config(text=self.state['text'])
@@ -111,7 +111,7 @@ class Login(Tk):
         register = Frame(self, padx=2, pady=2, bd=2)
         register.pack()
 
-        info = "Register with a password\nTo start using the manager"
+        info = "Зарегистрируйтесь\nДля начала работы"
         registerLabel = Label(register, text=info,
                               bd=10, font=LARGE_FONT, width=30)
         registerLabel.grid(row=0, columnspan=3)
@@ -127,7 +127,7 @@ class Login(Tk):
 
         s = ttk.Style()
         s.configure("Submit.TButton", font=BUTTON_FONT)
-        submitBtn = ttk.Button(register, text="Register",
+        submitBtn = ttk.Button(register, text="Зарегистрироваться",
                                style="Submit.TButton",
                                command=lambda: self.register(register,
                                                              entry, entryChk))
@@ -143,7 +143,7 @@ class Login(Tk):
             frame.destroy()
             self.addLoginFrame()
         else:
-            error = "Passwords dont match!!\nTry again."
+            error = "Пароли не совпадают!\nПопробуйте снова."
             errorLabel = Label(frame, text=error,
                                bd=10, font=("Verdana", 11), fg="red")
             errorLabel.grid(row=4, column=1, pady=3)
