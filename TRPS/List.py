@@ -1,6 +1,7 @@
 try:
     from tkinter import *
     from tkinter import ttk
+    from tkinter import messagebox
 except ImportError:
     from Tkinter import *
     import ttk
@@ -33,23 +34,47 @@ class ListWindow(Toplevel):
         self.passwords = self.load_passwords()
         self.updateList()
 
+        # Add a button to delete the selected password
+        delete_button = ttk.Button(self, text="Delete Selected", command=self.delete_selected)
+        delete_button.pack(pady=10)
+
         self.listbox.bind('<Double-1>', self.on_double_click)
 
     def updateList(self):
         self.listbox.delete(0, END)  
         seen_names = set()      
         for password in self.passwords:
-            if password['name'] not in seen_names: #Add password only with unique name
+            if password['name'] not in seen_names: 
                 seen_names.add(password['name'])
-                self.listbox.insert(END, password['name']) #Insert unique password names
+                self.listbox.insert(END, password['name'])
 
     def load_passwords(self):
         try:
             with open(".data", "r") as outfile:
                 data = json.load(outfile)
-                return [{'name': service, 'username': details[0], 'password': details[1]} for service, details in data.items()]
+                return [{'name': service, 'username': details[0], 'password': encode.decode(details[1])} for service, details in data.items()]  # Декодировать здесь
         except (IOError, json.JSONDecodeError):
-            return []  #Return empty list if there is an error in loading
+            return []  
+
+    def delete_selected(self):
+        selected_index = self.listbox.curselection()
+        if selected_index:
+            selected_service = self.listbox.get(selected_index[0])
+            if messagebox.askyesno("Confirm Delete", f"Are you sure you want to delete '{selected_service}'?"):
+                self.remove_password(selected_service)
+                self.updateList()  # Refresh the list after deletion
+
+    def remove_password(self, service_name):
+        try:
+            with open(".data", "r") as outfile:
+                data = json.load(outfile)
+            if service_name in data:
+                del data[service_name]  # Remove the service entry
+
+                with open(".data", "w") as outfile:
+                    json.dump(data, outfile, indent=4)  # Write updated data back to file
+        except Exception as e:
+            tk.messagebox.showerror("Error", f"Failed to delete entry: {e}")
 
     def on_double_click(self, event):
         selected_index = self.listbox.curselection()
