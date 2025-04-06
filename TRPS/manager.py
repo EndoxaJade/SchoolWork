@@ -18,25 +18,18 @@ BUTTON_FONT = ("Sans-Serif", 10, "bold")
 
 
 class Login(Tk):
-    """docstring for Login"""
-
     def __init__(self, *args):
         Tk.__init__(self, *args)
-
-        '''Needs update'''
         if os.name == 'nt':
             Tk.iconbitmap(self, default='icon.ico')
-        Tk.wm_title(self, "Шифровалка")
+        Tk.wm_title(self, "Shifrovalka")
         self.state = {
-            "text": "Войти в аккаунт.", "val": False
+            "text": "Sign in existing account.", "val": False
         }
-
         if encode.password:
             self.addLoginFrame()
         else:
             self.addRegisterFrame()
-
-        # Adding frames
 
     def addLoginFrame(self, *kwargs):
         login = Frame(self, padx=2, pady=2, bd=2)
@@ -48,37 +41,25 @@ class Login(Tk):
 
         entry = ttk.Entry(login, show="*")
         entry.grid(row=1, column=1, pady=3)
-        # _ marks an unused variable; used for lambda compatibility
-        # Bind event for when enter is pressed in the Entry
         entry.bind('<Return>', lambda _: self.checkPwd(
             login, label=loginLabel, entry=entry, btn=submitBtn))
         entry.focus_set()
-
         s = ttk.Style()
         s.configure("Submit.TButton", font=BUTTON_FONT)
-        submitBtn = ttk.Button(login, text="Войти", style="Submit.TButton",
-                               command=lambda: self.checkPwd(
-                                   login, label=loginLabel, entry=entry,
-                                   btn=submitBtn))
-
+        submitBtn = ttk.Button(login, text="Sign in", style="Submit.TButton",
+                               command=lambda: self.checkPwd(login, label=loginLabel, entry=entry, btn=submitBtn))
         submitBtn.grid(row=2, column=1, pady=3)
 
-    """Kwargs = loginLabel, password entry, and submit button"""
     def checkPwd(self, frame, **kwargs):
         chk = kwargs['entry'].get()
         # if passwords match
         #if hashlib.md5(chk).hexdigest() == encode.password:
-
-        self.state['text'] = "Вход"
+        self.state['text'] = "Entry"
         self.state['val'] = True
-            # Using .config() to modift the args
         kwargs['label'].config(text=self.state['text'])
         kwargs['entry'].config(state=DISABLED)
         kwargs['btn'].config(state=DISABLED)
-
-            # adding buttons
         self.addConfigBtn(frame)
-
         # If passwords don't match
         #else:
             #kwargs['label'].config(text=self.state['text'] + "\nTry Again!!!")
@@ -86,17 +67,13 @@ class Login(Tk):
     def addConfigBtn(self, login):
         # configured buttons
         # btnList = (addBtn, listBtn, getBtn)
-
-        # Creating temp references to images using temp1,2,3 so as to disallow
-        # garbage collection problems
         btnList = ["Add", "List", "Search"]
         btnCmdList = [lambda: Add.AddWindow(self),
                       lambda: List.ListWindow(self),
                       lambda: Search.SearchWindow(self)]
-        f = []  # Frames array
-        img = []  # image array
-        self.temp = []  # temp array
-
+        f = []  #Frames massive
+        img = []  #Image massive
+        self.temp = []  #Temp massive
         for i in range(3):
             f.append(Frame(login, padx=2, width=50, height=50))
             f[i].grid(row=3, column=i)
@@ -111,7 +88,7 @@ class Login(Tk):
         register = Frame(self, padx=2, pady=2, bd=2)
         register.pack()
 
-        info = "Зарегистрируйтесь\nДля начала работы"
+        info = "Sign up\nTo start using the app"
         registerLabel = Label(register, text=info,
                               bd=10, font=LARGE_FONT, width=30)
         registerLabel.grid(row=0, columnspan=3)
@@ -127,30 +104,27 @@ class Login(Tk):
 
         s = ttk.Style()
         s.configure("Submit.TButton", font=BUTTON_FONT)
-        submitBtn = ttk.Button(register, text="Зарегистрироваться",
+        submitBtn = ttk.Button(register, text="Sign up",
                                style="Submit.TButton",
                                command=lambda: self.register(register,
                                                              entry, entryChk))
         submitBtn.grid(row=3, column=1, pady=3)
 
     def register(self, frame, *pwd):
-        # pwd is a list containing password inputs
-        if pwd[0].get() == pwd[1].get():
+        if pwd[0].get() == pwd[1].get(): #Pwd contains password inputs
             #encode.password = hashlib.md5(pwd[0].get()).hexdigest() #ERROR!! "Strings must be encoded before hashing" when registering
-            # Saving password for future use.
+            #Saving password for future use.
             #open(".pwd", "w").write(encode.password)
 
             frame.destroy()
             self.addLoginFrame()
         else:
-            error = "Пароли не совпадают!\nПопробуйте снова."
+            error = "Passwords don't match!\nPlease, try again."
             errorLabel = Label(frame, text=error,
                                bd=10, font=("Verdana", 11), fg="red")
             errorLabel.grid(row=4, column=1, pady=3)
-
-            # Removing previosly entered Passwords
             for wid in pwd:
-                wid.delete(0, 'end')
+                wid.delete(0, 'end') #Removing previous password
 
 if __name__ == '__main__':
     new = Login()
