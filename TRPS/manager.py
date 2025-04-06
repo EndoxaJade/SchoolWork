@@ -22,9 +22,9 @@ class Login(Tk):
         Tk.__init__(self, *args)
         if os.name == 'nt':
             Tk.iconbitmap(self, default='icon.ico')
-        Tk.wm_title(self, "Shifrovalka")
+        Tk.wm_title(self, "Шифровалка")
         self.state = {
-            "text": "Sign in existing account.", "val": False
+            "text": "Войти в аккаунт.", "val": False
         }
         if encode.password:
             self.addLoginFrame()
@@ -88,7 +88,7 @@ class Login(Tk):
         register = Frame(self, padx=2, pady=2, bd=2)
         register.pack()
 
-        info = "Sign up\nTo start using the app"
+        info = "Зарегистрируйтесь\nДля начала работы"
         registerLabel = Label(register, text=info,
                               bd=10, font=LARGE_FONT, width=30)
         registerLabel.grid(row=0, columnspan=3)
@@ -104,7 +104,7 @@ class Login(Tk):
 
         s = ttk.Style()
         s.configure("Submit.TButton", font=BUTTON_FONT)
-        submitBtn = ttk.Button(register, text="Sign up",
+        submitBtn = ttk.Button(register, text="Зарегистрироваться",
                                style="Submit.TButton",
                                command=lambda: self.register(register,
                                                              entry, entryChk))
@@ -119,7 +119,7 @@ class Login(Tk):
             frame.destroy()
             self.addLoginFrame()
         else:
-            error = "Passwords don't match!\nPlease, try again."
+            error = "Пароли не совпадают!\nПопробуйте снова"
             errorLabel = Label(frame, text=error,
                                bd=10, font=("Verdana", 11), fg="red")
             errorLabel.grid(row=4, column=1, pady=3)
