@@ -59,7 +59,8 @@ class Login(Tk):
         kwargs['label'].config(text=self.state['text'])
         kwargs['entry'].config(state=DISABLED)
         kwargs['btn'].config(state=DISABLED)
-        self.addConfigBtn(frame)
+        frame.destroy()
+        self.addRegisterFrame()
         # If passwords don't match
         #else:
             #kwargs['label'].config(text=self.state['text'] + "\nTry Again!!!")
@@ -116,8 +117,7 @@ class Login(Tk):
             #Saving password for future use.
             #open(".pwd", "w").write(encode.password)
 
-            frame.destroy()
-            self.addLoginFrame()
+            self.addConfigBtn(frame)
         else:
             error = "Пароли не совпадают!\nПопробуйте снова"
             errorLabel = Label(frame, text=error,
