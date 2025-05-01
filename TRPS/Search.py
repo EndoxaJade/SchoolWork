@@ -5,6 +5,7 @@ except ImportError:
     from Tkinter import *
     import ttk
 import List
+import re
 
 BUTTON_FONT = ("Sans-Serif", 10, "bold")
 
@@ -29,16 +30,11 @@ class SearchWindow(Toplevel):
         search.grid(row=0, columnspan=2)
         search.focus_set()
         # Binding a <Return> pressed event
-        search.bind('<Return>', lambda _:  self.self.onUpdate())
+        search.bind('<Return>', lambda _:  self.onUpdate())
 
         s = ttk.Style()
         s.configure("Submit.TButton", font=BUTTON_FONT, sticky="e")
 
-        searchBtn = ttk.Button(self.frame, text="Search",
-                               style="Submit.TButton",
-                               command=lambda:  self.onUpdate()
-                               )
-        searchBtn.grid(row=0, column=3, sticky="e")
         # Awesomeness here
         self.tree = List.getTreeFrame(self, bd=3)
         self.tree.pack()
@@ -48,7 +44,7 @@ class SearchWindow(Toplevel):
     def onUpdate(self, *args):
         # Search regex
         content = self.namevar.get()
-        searchReg = re.compile(content, re.IGNORECASE) #ERROR!! "name 're' is not defined" when searching empty database
+        searchReg = re.compile(content, re.IGNORECASE)
         self.tree.updateList(searchReg)
         return True
 
