@@ -8,6 +8,7 @@ except ImportError:
 
 import encode
 import json
+import re
 #import pyperclip #Library for double click copy
 
 NORM_FONT = ("Helvetica", 10)
