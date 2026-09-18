@@ -300,11 +300,9 @@ class GeneratorWindow(Toplevel):
         self.geometry(f'{width}x{height}+{x}+{y}')
     
     def create_widgets(self):
-        # Основной контейнер
         main_frame = Frame(self, bg="#FFFFFF", padx=25, pady=20)
         main_frame.pack(fill=BOTH, expand=True)
         
-        # Заголовок
         title = Label(
             main_frame,
             text="🔐 Генератор паролей",
@@ -314,96 +312,47 @@ class GeneratorWindow(Toplevel):
         )
         title.pack(pady=(0, 15))
         
-        # === Параметры ===
         params_frame = Frame(main_frame, bg="#FFFFFF")
         params_frame.pack(fill=X, pady=(0, 15))
         
-        # Количество знаков
-        Label(
-            params_frame,
-            text="Количество знаков",
-            font=("Segoe UI", 11, "bold"),
-            bg="#FFFFFF",
-            fg="#333333",
-            anchor="w"
-        ).pack(fill=X, pady=(0, 3))
+        Label(params_frame, text="Количество знаков", font=("Segoe UI", 11, "bold"),
+              bg="#FFFFFF", fg="#333333", anchor="w").pack(fill=X, pady=(0, 3))
         
         self.length_var = StringVar(value="8")
-        length_entry = ttk.Entry(
-            params_frame,
-            textvariable=self.length_var,
-            font=("Segoe UI", 11),
-            width=10
-        )
+        length_entry = ttk.Entry(params_frame, textvariable=self.length_var,
+                                 font=("Segoe UI", 11), width=10)
         length_entry.pack(anchor=W, pady=(0, 10))
         
-        # Обязательные знаки
-        Label(
-            params_frame,
-            text="Обязательные знаки",
-            font=("Segoe UI", 11, "bold"),
-            bg="#FFFFFF",
-            fg="#333333",
-            anchor="w"
-        ).pack(fill=X, pady=(0, 3))
+        Label(params_frame, text="Обязательные знаки", font=("Segoe UI", 11, "bold"),
+              bg="#FFFFFF", fg="#333333", anchor="w").pack(fill=X, pady=(0, 3))
         
         self.mandatory_var = StringVar()
-        mandatory_entry = ttk.Entry(
-            params_frame,
-            textvariable=self.mandatory_var,
-            font=("Segoe UI", 11)
-        )
+        mandatory_entry = ttk.Entry(params_frame, textvariable=self.mandatory_var,
+                                    font=("Segoe UI", 11))
         mandatory_entry.pack(fill=X, pady=(0, 10))
-        mandatory_entry.insert(0, "")
         
-        # Количество паролей
-        Label(
-            params_frame,
-            text="Количество паролей",
-            font=("Segoe UI", 11, "bold"),
-            bg="#FFFFFF",
-            fg="#333333",
-            anchor="w"
-        ).pack(fill=X, pady=(0, 3))
+        Label(params_frame, text="Количество паролей", font=("Segoe UI", 11, "bold"),
+              bg="#FFFFFF", fg="#333333", anchor="w").pack(fill=X, pady=(0, 3))
         
         self.count_var = StringVar(value="1")
-        count_entry = ttk.Entry(
-            params_frame,
-            textvariable=self.count_var,
-            font=("Segoe UI", 11),
-            width=10
-        )
+        count_entry = ttk.Entry(params_frame, textvariable=self.count_var,
+                                font=("Segoe UI", 11), width=10)
         count_entry.pack(anchor=W, pady=(0, 10))
         
-        # Кнопка генерации
-        generate_btn = Button(
-            params_frame,
-            text="Сгенерировать пароли",
-            font=BUTTON_FONT,
-            bg="#E4CCFF",
-            fg="#5C0071",
-            relief="flat",
-            cursor="hand2",
-            command=self.generate_passwords
-        )
+        generate_btn = Button(params_frame, text="Сгенерировать пароли",
+                              font=BUTTON_FONT, bg="#E4CCFF", fg="#5C0071",
+                              relief="flat", cursor="hand2",
+                              command=self.generate_passwords)
         generate_btn.pack(fill=X, ipady=8, pady=(0, 10))
         
-        # === Список сгенерированных паролей ===
-        list_label = Label(
-            main_frame,
-            text="Сгенерированные пароли",
-            font=("Segoe UI", 11, "bold"),
-            bg="#FFFFFF",
-            fg="#333333",
-            anchor="w"
-        )
+        list_label = Label(main_frame, text="Сгенерированные пароли",
+                           font=("Segoe UI", 11, "bold"),
+                           bg="#FFFFFF", fg="#333333", anchor="w")
         list_label.pack(fill=X, pady=(0, 5))
         
-        # Фрейм для списка с прокруткой
         list_container = Frame(main_frame, bg="#FFFFFF")
         list_container.pack(fill=BOTH, expand=True, pady=(0, 10))
         
-        # Канвас для прокрутки
         self.canvas = Canvas(list_container, bg="#FFFFFF", highlightthickness=0)
         scrollbar = ttk.Scrollbar(list_container, orient="vertical", command=self.canvas.yview)
         self.scrollable_frame = Frame(self.canvas, bg="#FFFFFF")
@@ -419,44 +368,27 @@ class GeneratorWindow(Toplevel):
         self.canvas.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbar.pack(side=RIGHT, fill=Y)
         
-        # === Нижние кнопки ===
         bottom_frame = Frame(main_frame, bg="#FFFFFF")
         bottom_frame.pack(fill=X, pady=(10, 0))
         
-        # Кнопка "Повторно сгенерировать"
-        regen_btn = Button(
-            bottom_frame,
-            text="Повторно сгенерировать",
-            font=BUTTON_FONT,
-            bg="#E4CCFF",
-            fg="#5C0071",
-            relief="flat",
-            cursor="hand2",
-            command=self.generate_passwords
-        )
+        regen_btn = Button(bottom_frame, text="Повторно сгенерировать",
+                           font=BUTTON_FONT, bg="#E4CCFF", fg="#5C0071",
+                           relief="flat", cursor="hand2",
+                           command=self.generate_passwords)
         regen_btn.pack(side=LEFT, padx=5, ipadx=10, ipady=8, expand=True)
         
-        # Кнопка "Перейти в создание пароля" или "Вернуться"
         if self.return_to_add:
             btn_text = "Вернуться к созданию пароля"
         else:
             btn_text = "Перейти в создание пароля"
         
-        go_to_add_btn = Button(
-            bottom_frame,
-            text=btn_text,
-            font=BUTTON_FONT,
-            bg="#4CAF50",
-            fg="#FFFFFF",
-            relief="flat",
-            cursor="hand2",
-            command=self.go_to_add_password
-        )
+        go_to_add_btn = Button(bottom_frame, text=btn_text,
+                               font=BUTTON_FONT, bg="#4CAF50", fg="#FFFFFF",
+                               relief="flat", cursor="hand2",
+                               command=self.go_to_add_password)
         go_to_add_btn.pack(side=RIGHT, padx=5, ipadx=10, ipady=8, expand=True)
     
     def generate_passwords(self):
-        """Генерация паролей"""
-        # Получаем параметры
         try:
             length = int(self.length_var.get().strip())
             if length < 1:
@@ -469,14 +401,12 @@ class GeneratorWindow(Toplevel):
             messagebox.showwarning("Ошибка", "Введите корректное количество знаков")
             return
         
-        # Обязательные знаки
         mandatory = self.mandatory_var.get().strip()
         if mandatory:
             mandatory_chars = [c.strip() for c in mandatory.split(",")]
         else:
             mandatory_chars = []
         
-        # Количество паролей
         try:
             count = int(self.count_var.get().strip())
             if count < 1:
@@ -489,21 +419,15 @@ class GeneratorWindow(Toplevel):
             messagebox.showwarning("Ошибка", "Введите корректное количество паролей")
             return
         
-        # Генерируем пароли
         new_passwords = []
         for i in range(count):
             password = self.generate_single_password(length, mandatory_chars)
             new_passwords.append(password)
         
-        # Добавляем к существующим
         self.generated_passwords.extend(new_passwords)
-        
-        # Отображаем
         self.display_passwords()
     
     def generate_single_password(self, length, mandatory_chars):
-        """Генерация одного пароля"""
-        # Набор символов
         lowercase = string.ascii_lowercase
         uppercase = string.ascii_uppercase
         digits = string.digits
@@ -511,121 +435,68 @@ class GeneratorWindow(Toplevel):
         
         all_chars = lowercase + uppercase + digits + punctuation
         
-        # Если есть обязательные символы
         if mandatory_chars:
-            # Проверяем, что все обязательные символы есть в наборе
             valid_mandatory = []
             for char in mandatory_chars:
                 if char in all_chars:
                     valid_mandatory.append(char)
                 else:
-                    # Если символ не найден, добавляем его в набор
                     all_chars += char
                     valid_mandatory.append(char)
             
-            # Строим пароль с обязательными символами
             if length < len(valid_mandatory):
                 length = len(valid_mandatory) + 2
                 self.length_var.set(str(length))
             
-            # Сначала добавляем обязательные символы
             password_chars = valid_mandatory.copy()
-            
-            # Добавляем остальные случайные символы
             remaining = length - len(valid_mandatory)
             if remaining > 0:
                 password_chars.extend(random.choices(all_chars, k=remaining))
             
-            # Перемешиваем
             random.shuffle(password_chars)
             return ''.join(password_chars)
         else:
-            # Простая генерация
             return ''.join(random.choices(all_chars, k=length))
     
     def display_passwords(self):
-        """Отображение сгенерированных паролей"""
-        # Очищаем старые виджеты
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
         
-        # Создаем строки для каждого пароля
         for idx, password in enumerate(self.generated_passwords, 1):
             pwd_frame = Frame(self.scrollable_frame, bg="#FFFFFF", pady=3)
             pwd_frame.pack(fill=X)
             
-            # Номер
-            num_label = Label(
-                pwd_frame,
-                text=f"{idx}.",
-                font=("Segoe UI", 11),
-                bg="#FFFFFF",
-                fg="#666666",
-                width=4,
-                anchor="w"
-            )
+            num_label = Label(pwd_frame, text=f"{idx}.", font=("Segoe UI", 11),
+                              bg="#FFFFFF", fg="#666666", width=4, anchor="w")
             num_label.pack(side=LEFT)
             
-            # Пароль (скрытый по умолчанию)
-            pwd_label = Label(
-                pwd_frame,
-                text="●" * len(password),
-                font=("Segoe UI", 11, "bold"),
-                bg="#FFFFFF",
-                fg="#333333",
-                anchor="w"
-            )
+            pwd_label = Label(pwd_frame, text="●" * len(password),
+                              font=("Segoe UI", 11, "bold"),
+                              bg="#FFFFFF", fg="#333333", anchor="w")
             pwd_label.pack(side=LEFT, fill=X, expand=True, padx=(0, 5))
             
-            # Сохраняем пароль в атрибуте
             pwd_label.real_password = password
             pwd_label.showing = False
             
-            # Кнопка показа/скрытия
-            show_btn = Button(
-                pwd_frame,
-                text="👁",
-                font=("Segoe UI", 11),
-                bg="#FFFFFF",
-                fg="#666666",
-                relief="flat",
-                cursor="hand2",
-                command=lambda lbl=pwd_label: self.toggle_show_password(lbl)
-            )
+            show_btn = Button(pwd_frame, text="👁", font=("Segoe UI", 11),
+                              bg="#FFFFFF", fg="#666666", relief="flat", cursor="hand2",
+                              command=lambda lbl=pwd_label: self.toggle_show_password(lbl))
             show_btn.pack(side=RIGHT, padx=(0, 5))
             
-            # Кнопка копирования
-            copy_btn = Button(
-                pwd_frame,
-                text="📋",
-                font=("Segoe UI", 11),
-                bg="#FFFFFF",
-                fg="#666666",
-                relief="flat",
-                cursor="hand2",
-                command=lambda p=password: self.copy_password(p)
-            )
+            copy_btn = Button(pwd_frame, text="📋", font=("Segoe UI", 11),
+                              bg="#FFFFFF", fg="#666666", relief="flat", cursor="hand2",
+                              command=lambda p=password: self.copy_password(p))
             copy_btn.pack(side=RIGHT, padx=(0, 5))
             
-            # Кнопка перехода к добавлению (только если не возврат)
             if not self.return_to_add:
-                add_btn = Button(
-                    pwd_frame,
-                    text="➕",
-                    font=("Segoe UI", 11),
-                    bg="#FFFFFF",
-                    fg="#4CAF50",
-                    relief="flat",
-                    cursor="hand2",
-                    command=lambda p=password: self.go_to_add_with_password(p)
-                )
+                add_btn = Button(pwd_frame, text="➕", font=("Segoe UI", 11),
+                                 bg="#FFFFFF", fg="#4CAF50", relief="flat", cursor="hand2",
+                                 command=lambda p=password: self.go_to_add_with_password(p))
                 add_btn.pack(side=RIGHT, padx=(0, 5))
         
-        # Обновляем размер канваса
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
     
     def toggle_show_password(self, label):
-        """Показать/скрыть пароль"""
         if label.showing:
             label.config(text="●" * len(label.real_password))
             label.showing = False
@@ -634,37 +505,29 @@ class GeneratorWindow(Toplevel):
             label.showing = True
     
     def copy_password(self, password):
-        """Копирование пароля в буфер обмена"""
         if pyperclip:
             try:
                 pyperclip.copy(password)
                 messagebox.showinfo("Успех", "Пароль скопирован в буфер обмена")
+                return
             except:
-                # Если pyperclip не работает, используем стандартный способ
-                self.clipboard_clear()
-                self.clipboard_append(password)
-                self.update()
-                messagebox.showinfo("Успех", "Пароль скопирован в буфер обмена")
-        else:
-            self.clipboard_clear()
-            self.clipboard_append(password)
-            self.update()
-            messagebox.showinfo("Успех", "Пароль скопирован в буфер обмена")
+                pass
+        
+        self.clipboard_clear()
+        self.clipboard_append(password)
+        self.update()
+        messagebox.showinfo("Успех", "Пароль скопирован в буфер обмена")
     
     def go_to_add_with_password(self, password):
-        """Переход к добавлению с выбранным паролем"""
         self.destroy()
         self.parent.open_add_password_with_password(password)
     
     def go_to_add_password(self):
-        """Переход к добавлению пароля"""
         if self.return_to_add and self.add_window:
-            # Возвращаемся к окну добавления
             self.destroy()
             self.add_window.deiconify()
             self.add_window.lift()
         else:
-            # Открываем новое окно добавления
             last_password = self.generated_passwords[-1] if self.generated_passwords else ""
             self.destroy()
             self.parent.open_add_password_with_password(last_password)
@@ -691,6 +554,8 @@ class Login(Tk):
         
         self.selected_category = None
         self.filtered_passwords = []
+        self.search_query = ""
+        self.search_visible = False
 
         self.migrate_passwords()
 
@@ -1486,13 +1351,15 @@ class Login(Tk):
         """Открытие главного окна приложения"""
         self.clear_window()
         self.title("Шифровалка")
-        self.geometry("880x580")
+        self.geometry("880x620")
         self.resizable(False, False)
         self.configure(bg="#FFFFFF")
         self.center_window_for_main()
         
         self.selected_category = None
         self.filtered_passwords = []
+        self.search_query = ""
+        self.search_visible = False
         
         self.load_user_passwords()
         self.load_user_categories()
@@ -1502,7 +1369,7 @@ class Login(Tk):
     def center_window_for_main(self):
         self.update_idletasks()
         width = 880
-        height = 580
+        height = 620
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{width}x{height}+{x}+{y}')
@@ -1539,10 +1406,28 @@ class Login(Tk):
 
     def update_filtered_passwords(self):
         """Обновление списка отфильтрованных паролей"""
+        # Сначала фильтруем по категории
         if self.selected_category:
-            self.filtered_passwords = [p for p in self.passwords if p.get('category') == self.selected_category]
+            base_passwords = [p for p in self.passwords if p.get('category') == self.selected_category]
         else:
-            self.filtered_passwords = self.passwords.copy()
+            base_passwords = self.passwords.copy()
+        
+        # Затем фильтруем по поисковому запросу
+        if self.search_query:
+            query_lower = self.search_query.lower()
+            self.filtered_passwords = []
+            for p in base_passwords:
+                # Поиск по псевдониму, сайту и логину
+                alias = (p.get('alias') or '').lower()
+                site = (p.get('site') or '').lower()
+                login = (p.get('login') or '').lower()
+                
+                if (query_lower in alias or 
+                    query_lower in site or 
+                    query_lower in login):
+                    self.filtered_passwords.append(p)
+        else:
+            self.filtered_passwords = base_passwords
 
     def load_user_categories(self):
         """Загрузка категорий пользователя"""
@@ -1707,7 +1592,7 @@ class Login(Tk):
         right_panel = Frame(content_frame, bg="#F3E9FF")
         right_panel.pack(side=RIGHT, fill=BOTH, expand=True)
 
-        # Заголовок с кнопкой "Все пароли"
+        # Заголовок с кнопкой "Все пароли" и кнопкой поиска
         header_frame = Frame(right_panel, bg="#F3E9FF")
         header_frame.pack(fill=X, padx=10, pady=(8, 5))
 
@@ -1733,6 +1618,19 @@ class Login(Tk):
         )
         self.list_title.pack(side=LEFT)
 
+        # Кнопка поиска (справа)
+        self.search_btn = Button(
+            header_frame,
+            text="🔍",
+            font=("Segoe UI", 14),
+            bg="#F3E9FF",
+            fg="#5C0071",
+            relief="flat",
+            cursor="hand2",
+            command=self.toggle_search
+        )
+        self.search_btn.pack(side=RIGHT, padx=(8, 0))
+
         self.clear_filter_btn = Button(
             header_frame,
             text="✕ Очистить фильтр",
@@ -1745,6 +1643,31 @@ class Login(Tk):
         )
         self.clear_filter_btn.pack(side=RIGHT, padx=(8, 0))
         self.clear_filter_btn.pack_forget()
+
+        # === Строка поиска (скрытая по умолчанию) ===
+        self.search_frame = Frame(right_panel, bg="#F3E9FF")
+        # Изначально скрыта
+        
+        self.search_entry = ttk.Entry(
+            self.search_frame,
+            font=("Segoe UI", 11)
+        )
+        self.search_entry.pack(side=LEFT, fill=X, expand=True, padx=(0, 5))
+        self.search_entry.bind('<KeyRelease>', self.on_search_change)
+        self.search_entry.bind('<Escape>', lambda e: self.hide_search())
+        
+        # Кнопка очистки поиска
+        clear_search_btn = Button(
+            self.search_frame,
+            text="✕",
+            font=("Segoe UI", 11),
+            bg="#FFFFFF",
+            fg="#666666",
+            relief="flat",
+            cursor="hand2",
+            command=self.clear_search
+        )
+        clear_search_btn.pack(side=RIGHT)
 
         list_container = Frame(right_panel, bg="#F3E9FF")
         list_container.pack(fill=BOTH, expand=True, padx=8, pady=(0, 8))
@@ -1822,6 +1745,54 @@ class Login(Tk):
         gen_btn.pack(side=RIGHT, padx=3)
 
         self.protocol("WM_DELETE_WINDOW", self.on_main_closing)
+
+    # ============================================================
+    # МЕТОДЫ ПОИСКА
+    # ============================================================
+
+    def toggle_search(self):
+        """Показать/скрыть строку поиска"""
+        if self.search_visible:
+            self.hide_search()
+        else:
+            self.show_search()
+
+    def show_search(self):
+        """Показать строку поиска"""
+        self.search_visible = True
+        # Вставляем search_frame после header_frame
+        self.search_frame.pack(fill=X, padx=10, pady=(0, 5), after=self.list_title.master)
+        self.search_entry.focus_set()
+        self.search_btn.config(text="✕")
+        self.search_btn.config(fg="#FF6B6B")
+
+    def hide_search(self):
+        """Скрыть строку поиска"""
+        self.search_visible = False
+        self.search_frame.pack_forget()
+        self.search_btn.config(text="🔍")
+        self.search_btn.config(fg="#5C0071")
+        # Очищаем поиск
+        self.clear_search()
+
+    def on_search_change(self, event=None):
+        """Обработка изменения текста в поиске"""
+        self.search_query = self.search_entry.get().strip()
+        self.update_filtered_passwords()
+        self.update_password_list()
+        self.update_recent_list()
+
+    def clear_search(self):
+        """Очистка поиска"""
+        self.search_entry.delete(0, END)
+        self.search_query = ""
+        self.update_filtered_passwords()
+        self.update_password_list()
+        self.update_recent_list()
+
+    # ============================================================
+    # ОСТАЛЬНЫЕ МЕТОДЫ
+    # ============================================================
 
     def update_recent_list(self):
         """Обновление списка недавних паролей"""
@@ -1964,10 +1935,8 @@ class Login(Tk):
     def open_generator_from_add(self, add_window):
         """Открытие генератора из окна добавления"""
         generator = GeneratorWindow(self, return_to_add=True, add_window=add_window)
-        # Скрываем окно добавления
         add_window.withdraw()
         self.wait_window(generator)
-        # После закрытия генератора показываем окно добавления
         add_window.deiconify()
         add_window.lift()
 
@@ -1975,7 +1944,6 @@ class Login(Tk):
         """Открытие окна добавления с предустановленным паролем"""
         try:
             add_window = Add.AddWindow(self, update_callback=self.refresh_main)
-            # Если есть пароль, вставляем его
             if password:
                 add_window.password_entry.delete(0, END)
                 add_window.password_entry.insert(0, password)
